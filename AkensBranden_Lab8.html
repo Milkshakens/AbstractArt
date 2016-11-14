@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+<head> 
+<title> Abstract Art Generator </title> 
+
+<script>
+
+//generate random title
+function makeTitle(){
+	var lines = [
+		['Meditative', 'Objective', 'Reflective', 'Transformative'],
+		['Ellipses', 'State', 'Emotion', 'Composition'],
+		['V', 'VI', 'VII', 'VIII']
+	];
+	var title = '';
+
+	for (var i = 0; i < lines.length; i++){
+		var random = Math.floor(Math.random() * lines[i].length);
+		title += lines[i][random] + ' '
+	};
+	return(title);
+}
+
+function degreesToRadians(degrees){
+	return(degrees * Math.PI)/180;
+}
+
+//generate random text
+function drawText (canvas, context, title){
+	context.fillStyle = 'white';
+	context.font = 'bold 1.8em sans-serif';
+	context.textAlign = 'right';
+	context.fillText (title, canvas.width-20, canvas.height-40);
+}
+
+//circle shape properties
+function drawCircle (canvas, context, color){
+	var radius = Math.floor(Math.random() * 50);
+	var x = Math.floor(Math.random() * canvas.width);
+	var y = Math.floor(Math.random() * canvas.height);
+	context.beginPath();
+	context.arc(x, y, radius, 0, degreesToRadians(360), true);
+	context.fillStyle = color;
+	context.fill ();
+}
+
+//square shape properties
+function drawSquare (canvas, context, color){
+	var w = Math.floor(Math.random() * 50);
+	var x = Math.floor(Math.random() * canvas.width);
+	var y = Math.floor(Math.random() * canvas.height);
+	context.beginPath();
+	context.fillRect(x, y, w, w)
+	context.fillStyle = color;
+	context.fill ();
+}
+
+function artGenerator(){
+	//draw title
+	var title = makeTitle();
+	
+	//alert(title);
+	var canvas = document.getElementById('artCanvas');
+	var context = canvas.getContext('2d');
+	
+	//background color
+	fillBackgroundColor(canvas, context);
+	var shapes = ['square', 'circle'];
+	var colors = ['silver', 'orange', 'green', 'black'];
+	for (var i = 0; i < 20; i++){
+		var color = colors[Math.floor(Math.random() * colors.length)];
+		var shape = shapes[Math.floor(Math.random() * shapes.length)];
+			if (shape == 'circle'){
+			drawCircle(canvas, context, color);
+			}
+			else {
+			drawSquare(canvas, context, color);
+			}
+		}
+	
+	drawText (canvas, context, title);
+	}
+
+function fillBackgroundColor(canvas, context){
+	var colors = ['blue', 'black', 'red', 'purple'];
+	var color = colors[Math.floor(Math.random() * colors.length)];
+	context.fillStyle = color;
+	context.fillRect(0, 0, canvas.width, canvas.height);
+
+}
+window.onload = function(){
+	var button = document.getElementById('artButton');
+	button.onclick = artGenerator;
+}
+
+
+</script>
+</head> 
+<body>
+<canvas  id = "artCanvas" width='600' height='200' id='artCanvas'> </canvas>
+<form>
+    <input type = 'button' id='artButton' value= 'New Art'>
+</form> 
+</body>
+</html>
